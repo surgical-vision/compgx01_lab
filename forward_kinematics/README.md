@@ -26,4 +26,20 @@ This section will look at writiing tf functionalities into your application star
     * If you haven't got that working try `rostopic pub -1 /EffortJointInterface_J{joint_number}_controller/command std_msgs/Float64 '{commanded_position}'`
       Remember to change `{joint_number}` and `{commanded_position}`
 
+## Forward Kinematics
+This section will cover how to convert from joint space to cartesian space. 
 
+### Robot Description
+ROS has a format for describing robots, the Universal Robot Description Format (URDF), it is loaded everytime the youbot simulator is run. The URDF file contains information on the links and joints of the robot.
+  * The URDF file is loaded at runtime to the parameter robot_description
+  * This can be found using the commandline with `rosparam get robot_description`
+  * Identify the joints in the description, you can either do this: 
+    * Programatically by creating a node to parse robot description and find each joint (the file is an xml), this would allow you to use this for any robot_description
+    * Manually
+  * Make this into a function that accepts the joint values as a param then returns the pose of the end-effector
+  
+### Cartesian Pose
+Combine this with the joint subscriber you made last week to make a node that:
+  * Subscribes to the joint state of the robot
+  * Computes the cartesian pose
+  * Publishes the current pose as a PoseStamped message 
