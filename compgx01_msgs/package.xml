@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>custom_msgs</name>
+  <name>compgx01_msgs</name>
   <version>0.0.0</version>
-  <description>The custom_msgs package</description>
+  <description>The compgx01_msgs package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
