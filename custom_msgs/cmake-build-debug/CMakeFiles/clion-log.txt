@@ -1,0 +1,27 @@
+/opt/clion-2017.2.3/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/kpach/catkin_ws/src/compgx01_lab/custom_msgs
+-- Using CATKIN_DEVEL_PREFIX: /home/kpach/catkin_ws/src/compgx01_lab/custom_msgs/cmake-build-debug/devel
+-- Using CMAKE_PREFIX_PATH: /home/kpach/catkin_ws/devel;/opt/ros/kinetic
+-- This workspace overlays: /home/kpach/catkin_ws/devel;/opt/ros/kinetic
+-- Using PYTHON_EXECUTABLE: /usr/bin/python
+-- Using Debian Python package layout
+-- Using empy: /usr/bin/empy
+-- Using CATKIN_ENABLE_TESTING: ON
+-- Call enable_testing()
+-- Using CATKIN_TEST_RESULTS_DIR: /home/kpach/catkin_ws/src/compgx01_lab/custom_msgs/cmake-build-debug/test_results
+-- Found gtest sources under '/usr/src/gtest': gtests will be built
+-- Using Python nosetests: /usr/bin/nosetests-2.7
+-- catkin 0.7.6
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- custom_msgs: 3 messages, 0 services
+CMake Warning at /opt/ros/kinetic/share/catkin/cmake/catkin_package.cmake:416 (message):
+  catkin_package() include dir
+  '/home/kpach/catkin_ws/src/compgx01_lab/custom_msgs/cmake-build-debug/devel/include'
+  should be placed in the devel space instead of the build space
+Call Stack (most recent call first):
+  /opt/ros/kinetic/share/catkin/cmake/catkin_package.cmake:102 (_catkin_package)
+  CMakeLists.txt:108 (catkin_package)
+
+
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/kpach/catkin_ws/src/compgx01_lab/custom_msgs/cmake-build-debug
