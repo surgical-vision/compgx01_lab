@@ -1,3 +1,3 @@
-float64[] first_row
-float64[] second_row
-float64[] third_row
+float64[3] first_row
+float64[3] second_row
+float64[3] third_row
