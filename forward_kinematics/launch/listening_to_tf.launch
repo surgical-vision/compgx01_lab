@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="gui" default="false"/>
+	<arg name="rviz" default="false"/>
+  <arg name="trajectory_interface" default="false"/>
+  <include file="$(find youbot_simulator)/launch/youbot_sim.launch">
+    <arg name="rviz" value="$(arg rviz)"/>
+    <arg name="gui" value="$(arg gui)"/>
+    <arg name="trajectory_interface" value="$(arg trajectory_interface)"/>
+  </include>
+  
+  <node pkg="tf2_ros" type="static_transform_publisher" name="static_broadcaster" args="0.4 0.0 0.2 0 0 0 arm_link_0 static_frame" />
+
+</launch>
