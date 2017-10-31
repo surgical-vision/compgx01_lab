@@ -50,15 +50,17 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
 add_message_files(
     FILES
-        EulerMsg.msg
-        AngleAxisMsg.msg
-        RotMatMsg.msg
+        EulerAngle.msg
+        AngleAxis.msg
+        RotationMatrix.msg
 )
 
 ## Generate services in the 'srv' folder
 add_service_files(
         FILES
         quat2Euler.srv
+        quat2AngAxis.srv
+        rotmat2Quat.srv
 )
 
 ## Generate actions in the 'action' folder

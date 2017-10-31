@@ -1,0 +1,3 @@
+compgx01_msgs/RotationMatrix input
+---
+geometry_msgs/Quaternion output
