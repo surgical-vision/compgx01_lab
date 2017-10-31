@@ -36,8 +36,8 @@ int main(int argc, char **argv)
     ros::NodeHandle n;
 
     ros::ServiceServer service_quat2Euler = n.advertiseService("quat2Euler_converter", convert_quat2Euler);
-    ros::ServiceServer service_quat2AngleAxis = n.advertiseService("quat2AngleAxis_converter", convert_quat2AngleAxis);
-    ros::ServiceServer service_rotMat2quat = n.advertiseService("rotMat2quat_converter", convert_rotMat2quat);
+//    ros::ServiceServer service_quat2AngleAxis = n.advertiseService("quat2AngleAxis_converter", convert_quat2AngleAxis);
+//    ros::ServiceServer service_rotMat2quat = n.advertiseService("rotMat2quat_converter", convert_rotMat2quat);
 
     ROS_INFO("Ready to convert from a quaternion to Euler angle representation.");
     ros::spin();
