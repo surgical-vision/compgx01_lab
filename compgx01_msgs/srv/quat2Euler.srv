@@ -1,0 +1,3 @@
+geometry_msgs/Quaternion input
+---
+compgx01_msgs/EulerAngle output
