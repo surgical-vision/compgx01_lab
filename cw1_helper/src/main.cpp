@@ -1,8 +1,7 @@
 #include "ros/ros.h"
 #include "compgx01_msgs/quat2Euler.h"
-// TO DO: Build
-//#include "compgx01_msgs/quat2AngleAxis.h"
-//#include "compgx01_msgs/rotMat2quat.h"
+#include "compgx01_msgs/quat2AngAxis.h"
+#include "compgx01_msgs/rotmat2Quat.h"
 
 bool convert_quat2Euler(compgx01_msgs::quat2Euler::Request  &req,
          compgx01_msgs::quat2Euler::Response &res)
@@ -12,23 +11,22 @@ bool convert_quat2Euler(compgx01_msgs::quat2Euler::Request  &req,
     return true;
 }
 
-//// Build your service first and uncomment these lines
-//bool convert_quat2AngleAxis(compgx01_msgs::quat2AngleAxis::Request  &req,
-//                        compgx01_msgs::quat2AngleAxis::Response &res)
-//{
-//    //TO DO:
-//    //Put your rotation representations converter here.....
-//    return true;
-//}
+bool convert_quat2AngAxis(compgx01_msgs::quat2AngAxis::Request  &req,
+                        compgx01_msgs::quat2AngAxis::Response &res)
+{
+    //TO DO:
+    //Put your rotation representations converter here.....
+    return true;
+}
 
-//// Build your service first and uncomment these lines
-//bool convert_rotMat2quat(compgx01_msgs::rotMat2quat::Request  &req,
-//                        compgx01_msgs::rotMat2quat::Response &res)
-//{
-//    //TO DO:
-//    //Put your rotation representations converter here.....
-//    return true;
-//}
+
+bool convert_rotmat2Quat(compgx01_msgs::rotmat2Quat::Request  &req,
+                        compgx01_msgs::rotmat2Quat::Response &res)
+{
+    //TO DO:
+    //Put your rotation representations converter here.....
+    return true;
+}
 
 int main(int argc, char **argv)
 {
@@ -36,11 +34,12 @@ int main(int argc, char **argv)
     ros::NodeHandle n;
 
     ros::ServiceServer service_quat2Euler = n.advertiseService("quat2Euler_converter", convert_quat2Euler);
-//    ros::ServiceServer service_quat2AngleAxis = n.advertiseService("quat2AngleAxis_converter", convert_quat2AngleAxis);
-//    ros::ServiceServer service_rotMat2quat = n.advertiseService("rotMat2quat_converter", convert_rotMat2quat);
+    ros::ServiceServer service_quat2AngleAxis = n.advertiseService("quat2AngAxis_converter", convert_quat2AngAxis);
+    ros::ServiceServer service_rotMat2quat = n.advertiseService("rotmat2Quat_converter", convert_rotmat2Quat);
 
     ROS_INFO("Ready to convert from a quaternion to Euler angle representation.");
     ros::spin();
 
     return 0;
 }
+
