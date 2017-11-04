@@ -33,6 +33,7 @@ def quat2angaxis_func(req):
 def rotmat2quat_func(req):
     rotmat = req.input
 
+    # Fill in your quaternions here
     quat = Quaternion()
     quat.x = 0.0
     quat.y = 0.0
