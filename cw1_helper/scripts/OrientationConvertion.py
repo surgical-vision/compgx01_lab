@@ -9,7 +9,7 @@ def quat2euler_func(req):
     quat = req.input
 
     # Fill in your euler angles here
-    euler = EulerMsg()
+    euler = EulerAngle()
     euler.order = 'zyx'
     euler.angle = [0, 0, 0]
 
@@ -21,7 +21,7 @@ def quat2angaxis_func(req):
     quat = req.input
 
     # Fill in your euler angles here
-    angAxis = AngleAxisMsg()
+    angAxis = AngleAxis()
     angAxis.angle = 0.0
     angAxis.axis.x = 0.0
     angAxis.axis.y = 0.0
