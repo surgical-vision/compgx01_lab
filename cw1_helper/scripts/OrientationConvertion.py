@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 import rospy
 from compgx01_msgs.srv import *
 from compgx01_msgs.msg import *
@@ -25,7 +27,7 @@ def quat2angaxis_func(req):
     angAxis.angle = 0.0
     angAxis.axis.x = 0.0
     angAxis.axis.y = 0.0
-    angAxis.axis.z = 1.0
+    angAxis.axis.z    = 1.0
 
     return quat2AngAxisResponse(angAxis)
 
@@ -40,6 +42,7 @@ def rotmat2quat_func(req):
     quat.z = 0.0
     quat.w = 1.0
     return rotmat2QuatResponse(quat)
+
 
 if __name__ == "__main__":
     rospy.init_node('orientation_conversion')
