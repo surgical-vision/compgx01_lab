@@ -15,10 +15,13 @@ find_package(catkin REQUIRED COMPONENTS
   tf2_ros
   trajectory_msgs
   youbot_description
+  tf
 )
 
+
+find_package(Eigen3 REQUIRED)
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+find_package(orocos_kdl REQUIRED)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -109,8 +112,8 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES inverse_kinematics
-#  CATKIN_DEPENDS geometry_msgs roscpp rospy sensor_msgs tf2_ros trajectory_msgs youbot_description
-#  DEPENDS system_lib
+#   CATKIN_DEPENDS geometry_msgs roscpp rospy sensor_msgs tf2_ros trajectory_msgs youbot_description
+   DEPENDS EIGEN3
 )
 
 ###########
@@ -122,6 +125,8 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
+  ${EIGEN3_INCLUDE_DIRS}
+  $ENV{EIGEN3_INCLUDE_DIR}
 )
 
 ## Declare a C++ library
@@ -137,7 +142,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/inverse_kinematics_node.cpp)
+add_executable(Youbot_Controller scripts/main.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -150,9 +155,10 @@ include_directories(
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(Youbot_Controller
+  ${catkin_LIBRARIES}
+  ${orocos_kdl_LIBRARIES}
+)
 
 #############
 ## Install ##
