@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(q3)
+project(cw2_helper)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -11,7 +11,15 @@ find_package(catkin REQUIRED COMPONENTS
   compgx01_msgs
   roscpp
   rospy
+  sensor_msgs
+  geometry_msgs
+  trajectory_msgs
+  tf
+  tf2_ros
 )
+
+find_package(Eigen3 REQUIRED)
+find_package(orocos_kdl REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -116,8 +124,10 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
+  ${EIGEN3_INCLUDE_DIRS}
+  $ENV{EIGEN3_INCLUDE_DIR}
 )
 
 ## Declare a C++ library
@@ -148,6 +158,7 @@ add_executable(${PROJECT_NAME}_node src/main.cpp)
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
+  ${orocos_kdl_LIBRARIES}
 )
 
 #############
