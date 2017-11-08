@@ -13,18 +13,20 @@ class Youbot
 private:
 
     ros::NodeHandle n;
-    ros::Subscriber joint_sub;
     tf::TransformBroadcaster br;
     KDL::Frame current_pose;
     KDL::Chain kine_chain;
     KDL::JntArray current_joint_position;
+    geometry_msgs::TransformStamped tr_stamped;
+    tf::Transform trans;
+    tf::Quaternion q;
 
 public:
 
     Youbot(): n() {}
 
-    int main(int argc, char **argv) {
-
+    int init()
+    {
 
         setup_kdl_chain();
         current_joint_position = KDL::JntArray(kine_chain.getNrOfJoints());
@@ -33,13 +35,15 @@ public:
         KDL::ChainIkSolverPos_LMA ik_solver = KDL::ChainIkSolverPos_LMA(kine_chain);
         KDL::ChainJntToJacSolver jac_solver = KDL::ChainJntToJacSolver(kine_chain);
 
-        joint_sub = n.subscribe<sensor_msgs::JointState>("/joint_states", 1, boost::bind(&Youbot::joint_state_callback,
+        ros::Subscriber joint_sub = n.subscribe<sensor_msgs::JointState>("/joint_states", 1, boost::bind(&Youbot::joint_state_callback,
                                                                                          this, _1, fk_solver));
 
+        run();
+    }
+
+    int run()
+    {
         ros::Rate r(200);
-        tf::Transform trans;
-        geometry_msgs::TransformStamped tr_stamped;
-        tf::Quaternion q;
 
         while (n.ok())
         {
@@ -100,5 +104,5 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "youbot");
 
     Youbot y;
-    return y.main(argc, argv);
+    return y.init();
 }
