@@ -9,6 +9,8 @@ int YoubotKDL::init() {
                                                                          &YoubotKDL::joint_state_callback, this);
     setup_kdl_chain();
     current_joint_position = KDL::JntArray(kine_chain.getNrOfJoints());
+
+    std::cout << "TEST_KDL" << std::endl;
 }
 
 void YoubotKDL::setup_kdl_chain() {

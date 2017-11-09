@@ -16,11 +16,13 @@ class YoubotKine
 {
 
 protected:
-    ros::NodeHandle n;
     tf2_ros::TransformBroadcaster br;
     geometry_msgs::TransformStamped tr_stamped;
     tf2::Quaternion q;
     static double DH_params[4][5];
+
+public:
+    ros::NodeHandle n;
 };
 
 #endif //CW2_HELPER_YOUBOTKINE_H

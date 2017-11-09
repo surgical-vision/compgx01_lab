@@ -5,6 +5,7 @@ int YoubotManual::init()
     ros::Subscriber joint_sub_kine = n.subscribe<sensor_msgs::JointState>("/joint_states", 1,
                                                                           &YoubotManual::joint_state_callback,
                                                                           this);
+    std::cout << "TEST_MANUAL" << std::endl;
 }
 
 void YoubotManual::joint_state_callback(const sensor_msgs::JointState::ConstPtr &q) {

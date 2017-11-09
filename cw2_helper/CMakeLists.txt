@@ -15,16 +15,18 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   trajectory_msgs
   tf2_ros
+  rosbag
 )
 
 find_package(Eigen3 REQUIRED)
 find_package(orocos_kdl REQUIRED)
+find_package(Boost REQUIRED)
 
 set(HEADER_FILES
         include/cw2_helper/YoubotKDL.h
         include/cw2_helper/YoubotKine.h
         include/cw2_helper/YoubotManual.h
-        )
+)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -155,7 +157,8 @@ add_executable(${PROJECT_NAME}_node
         src/main.cpp
         src/YoubotKDL.cpp
         src/YoubotManual.cpp
-        ${HEADER_FILES})
+        ${HEADER_FILES}
+)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
