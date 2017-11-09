@@ -14,7 +14,6 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   geometry_msgs
   trajectory_msgs
-  tf
   tf2_ros
 )
 

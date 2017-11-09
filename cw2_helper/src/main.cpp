@@ -1,51 +1,57 @@
-#include "ros/ros.h"
-#include "compgx01_msgs/cls_youbot_ikine.h"
-#include "compgx01_msgs/ite_youbot_ikine.h"
-#include "compgx01_msgs/youbot_jacob.h"
+#include <ros/ros.h>
+#include <sensor_msgs/JointState.h>
+#include <geometry_msgs/TransformStamped.h>
+#include <tf2_ros/transform_broadcaster.h>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2_kdl/tf2_kdl.h>
+#include <kdl/chain.hpp>
+#include <kdl/chainiksolverpos_lma.hpp>
+#include <kdl/chainfksolverpos_recursive.hpp>
+#include <kdl/frames_io.hpp>
+#include <kdl/chainjnttojacsolver.hpp>
 
-bool compute_closed_ikine(compgx01_msgs::cls_youbot_ikine::Request  &req,
-                        compgx01_msgs::cls_youbot_ikine::Response &res)
+class YouBot
 {
-    //TO DO:
-    //Put your closed form inverse kinematics here.....
-    return true;
-}
 
-bool compute_ite_ikine(compgx01_msgs::ite_youbot_ikine::Request  &req,
-                          compgx01_msgs::ite_youbot_ikine::Response &res)
+protected:
+    ros::NodeHandle n;
+    tf2_ros::TransformBroadcaster br;
+    geometry_msgs::TransformStamped tr_stamped;
+    tf2::Quaternion q;
+    double DH_params[4][5] = {{0.033, 0.155, 0.135, 0.0, 0.0},
+                              {M_PI_2, 0.0, 0.0, M_PI_2, 0.0},
+                              {0.147, 0.0, 0.0, 0.0, 0.218},
+                              {0.0, M_PI_2, 0.0, M_PI_2, M_PI}};
+
+public:
+
+
+};
+
+class YouBotKDL : public YouBot
 {
-    //TO DO:
-    //Put your iterative inverse kinematics here.....
-    return true;
-}
 
+private:
+    KDL::Frame current_pose;
+    KDL::Chain kine_chain;
+    KDL::JntArray current_joint_position;
 
-bool compute_jacobian(compgx01_msgs::youbot_jacob::Request  &req,
-                         compgx01_msgs::youbot_jacob::Response &res)
+public:
+
+};
+
+class YouBotKine : public YouBot
 {
-    //TO DO:
-    //Put your jacobian calculation here.....
-    return true;
-}
 
-// TO DO:
-//Put your singularity detection here....
-//int detect_singularity()
-//{
-//
-//}
+private:
+
+public:
+
+};
 
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "ikine_jacob_server");
-    ros::NodeHandle n;
-
-    ros::ServiceServer service_quat2Euler = n.advertiseService("ikine_closed_form", compute_closed_ikine);
-    ros::ServiceServer service_quat2AngleAxis = n.advertiseService("ikine_ite", compute_ite_ikine);
-    ros::ServiceServer service_rotMat2quat = n.advertiseService("jacobian_youbot", compute_jacobian);
-
-    ROS_INFO("Ready to compute inverse kinematics and jacobian matrix.");
-    ros::spin();
-
+    ros::init(argc, argv, "youbot");
+    ros::NodeHandle n =
     return 0;
 }

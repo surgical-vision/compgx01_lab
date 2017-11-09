@@ -63,9 +63,6 @@ add_service_files(
         quat2Euler.srv
         quat2AngAxis.srv
         rotmat2Quat.srv
-        cls_youbot_ikine.srv
-        ite_youbot_ikine.srv
-        youbot_jacob.srv
 )
 
 ## Generate actions in the 'action' folder
