@@ -6,12 +6,13 @@ from sensor_msgs.msg import JointState
 from geometry_msgs.msg import TransformStamped
 import PyKDL
 import tf2_ros
+
 from tf_conversions import posemath
 
 import tf2_kdl
 
 
-class Youbot:
+class YoubotKDL:
     def __init__(self):
         # Setup the subscribers for the joint states
         self.subscriber_joint_state_ = rospy.Subscriber('/joint_states', JointState, self.joint_state_callback, queue_size=5)
