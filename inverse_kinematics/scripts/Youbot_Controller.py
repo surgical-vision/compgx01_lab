@@ -30,25 +30,45 @@ class Youbot:
         self.jac_calc = PyKDL.ChainJntToJacSolver(self.kine_chain)
 
     def setup_kdl_chain(self):
-        self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(0.033, pi / 2, 0.147, 0)))
-        self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(0.155, 0, 0, pi / 2)))
-        self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(0.135, 0, 0, 0)))
-        self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(0.0, pi / 2, 0, pi / 2)))
-        self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(0, 0, 0.218, pi)))
+        # self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(0.033, pi / 2, 0.147, 0)))
+        # self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(0.155, 0, 0, pi / 2 )))
+        # self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(0.135, 0, 0, 0)))
+        # self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(0.0, pi / 2, 0, pi / 2)))
+        # self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(-0.033, 0, 0.218, 0)))
+
+        # self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(0.033, pi / 2, 0.147, (170 * pi/180.0))))
+        # self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(0.155, 0, 0, (pi / 2) + (65.0 * pi/180.0))))
+        # self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(0.135, 0, 0, (146 * pi/180.0))))
+        # self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(0.0, pi / 2, 0, (pi / 2) + (-102.5 * pi/180.0))))
+        # self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(0, 0, 0.218, (167.5 * pi/180.0))))
+
+        self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(-0.024, pi, 0.096, 160*pi/180)))
+        self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(0.033, pi / 2, -0.019, pi + (169 * pi / 180.0))))
+        self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(-0.155, 0, 0, pi/2 + (-65.0 * pi / 180.0))))
+        self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(-0.135, 0, 0, (146 * pi / 180.0))))
+        self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(0.002, pi / 2, 0, (pi / 2) + (-102.5 * pi / 180.0))))
+        self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(0, pi, -0.21, -150*pi/180+(167.5 * pi / 180.0))))
 
     def joint_state_callback(self, msg):
         # Copies joint position into KDL JntArray
+        self.current_joint_position[0] = 0.0
+
         for i in range(0, 5):
-            self.current_joint_position[i] = msg.position[i]
+            self.current_joint_position[i + 1] = msg.position[i]
 
         # Calculates the current pose everytime the joint position updates
-        self.fk_solver.JntToCart(self.current_joint_position, self.current_pose)
+        self.fk_solver.JntToCart(self.current_joint_position, self.current_pose, 6)
 
     def broadcast_pose(self):
         trans = TransformStamped()
 
-        tf2_kdl.do_transform_frame(self.current_pose, trans)
-        trans.header.frame_id = "arm_link_0"
+        #tf2_kdl.do_transform_frame(self.current_pose, trans)
+        pose = posemath.toMsg(self.current_pose)
+
+        trans.transform.rotation = pose.orientation
+        trans.transform.translation = pose.position
+
+        trans.header.frame_id = "base_link"
         trans.header.stamp = rospy.Time.now()
         trans.child_frame_id = "arm_end_effector"
 
@@ -63,7 +83,7 @@ class Youbot:
         rate = rospy.Rate(200)
         while not rospy.is_shutdown():
             # Call your functions here
-
+            self.broadcast_pose()
             rate.sleep()
 
 if __name__ == '__main__':
