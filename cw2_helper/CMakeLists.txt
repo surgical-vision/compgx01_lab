@@ -20,6 +20,12 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(Eigen3 REQUIRED)
 find_package(orocos_kdl REQUIRED)
 
+set(HEADER_FILES
+        include/cw2_helper/YoubotKDL.h
+        include/cw2_helper/YoubotKine.h
+        include/cw2_helper/YoubotManual.h
+        )
+
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -120,6 +126,7 @@ catkin_package(
 ## Build ##
 ###########
 
+
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
@@ -130,9 +137,11 @@ include_directories(
 )
 
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/q3.cpp
-# )
+add_library(${PROJECT_NAME}
+  src/YoubotKDL.cpp
+  src/YoubotManual.cpp
+  ${HEADER_FILES}
+)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -142,7 +151,11 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(${PROJECT_NAME}_node src/main.cpp)
+add_executable(${PROJECT_NAME}_node
+        src/main.cpp
+        src/YoubotKDL.cpp
+        src/YoubotManual.cpp
+        ${HEADER_FILES})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
