@@ -16,6 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
   trajectory_msgs
   youbot_description
   tf
+  rosbag
 )
 
 
@@ -27,6 +28,8 @@ find_package(orocos_kdl REQUIRED)
 set(HEADER_FILES
         include/inverse_kinematics/YoubotKDL.h
         include/inverse_kinematics/YoubotKinematics.h)
+
+add_definitions(-DMY_PACKAGE_PATH="${PROJECT_SOURCE_DIR}/bags/")
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -135,8 +138,8 @@ include_directories(
 
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
-  scripts/YoubotKinematics.cpp
-  scripts/YoubotKDL.cpp
+  src/YoubotKinematics.cpp
+  src/YoubotKDL.cpp
   ${HEADER_FILES}
 )
 
@@ -148,15 +151,12 @@ add_library(${PROJECT_NAME}
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-<<<<<<< HEAD
 add_executable(trajectory_follower
-        scripts/trajectory_follower.cpp
-        scripts/YoubotKinematics.cpp
-        scripts/YoubotKDL.cpp
+        src/trajectory_follower.cpp
+        src/YoubotKinematics.cpp
+        src/YoubotKDL.cpp
         ${HEADER_FILES})
-=======
-add_executable(Youbot_Controller src/main.cpp)
->>>>>>> cw2_gd
+
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

@@ -6,9 +6,9 @@ int YoubotKDL::init()
     setup_kdl_chain();
     current_joint_position = KDL::JntArray(kine_chain.getNrOfJoints());
 
-    KDL::ChainFkSolverPos_recursive fk_solver = KDL::ChainFkSolverPos_recursive(kine_chain);
-    KDL::ChainIkSolverPos_LMA ik_solver = KDL::ChainIkSolverPos_LMA(kine_chain);
-    KDL::ChainJntToJacSolver jac_solver = KDL::ChainJntToJacSolver(kine_chain);
+    fk_solver = KDL::ChainFkSolverPos_recursive(kine_chain);
+    ik_solver = KDL::ChainIkSolverPos_LMA(kine_chain);
+    jac_solver = KDL::ChainJntToJacSolver(kine_chain);
 
     ros::Subscriber joint_sub = n.subscribe<sensor_msgs::JointState>("/joint_states", 1, &YoubotKDL::joint_state_callback,
                                                                                                      this);
@@ -22,7 +22,7 @@ KDL::Jacobian YoubotKDL::get_jacobian(KDL::ChainJntToJacSolver jac_solver)
     return jac;
 }
 
-int YoubotKDL::forward_kinematics(KDL::ChainFkSolverPos_recursive fk_solver, KDL::JntArray current_joint_position)
+int YoubotKDL::forward_kinematics(KDL::ChainFkSolverPos_recursive fk_solver, KDL::JntArray current_joint_position, KDL::Frame current_pose)
 {
     return fk_solver.JntToCart(current_joint_position, current_pose, 6);
 }
@@ -44,7 +44,7 @@ void YoubotKDL::setup_kdl_chain()
     kine_chain.addSegment(KDL::Segment(KDL::Joint(KDL::Joint::RotZ), KDL::Frame::DH(     0,   M_PI,  -0.21, -150*M_PI/180+(167.5 * M_PI / 180.0))));
 }
 
-KDL::JntArray YoubotKDL::inverse_kinematics_closed(KDL::JntArray current_joint_position, KDL::Frame desired_pose, KDL::ChainIkSolverPos_LMA ik_solver)
+KDL::JntArray YoubotKDL::inverse_kinematics_closed(KDL::Frame desired_pose, KDL::ChainIkSolverPos_LMA ik_solver)
 {
     KDL::JntArray required_joint = KDL::JntArray(kine_chain.getNrOfJoints());
     ik_solver.CartToJnt(current_joint_position, desired_pose, required_joint);
@@ -52,31 +52,13 @@ KDL::JntArray YoubotKDL::inverse_kinematics_closed(KDL::JntArray current_joint_p
     return required_joint;
 }
 
-void YoubotKDL::broadcast_pose()
+void YoubotKDL::broadcast_pose(KDL::Frame current_pose)
 {
-    ros::Rate r(200);
+    tr_stamped = tf2::kdlToTransform(current_pose);
+    tr_stamped.header.stamp = ros::Time::now();
+    tr_stamped.header.frame_id = "base_link";
+    tr_stamped.child_frame_id = "arm_end_effector";
 
-    while (n.ok())
-    {
+    pose_broadcaster.sendTransform(tr_stamped);
 
-        tr_stamped = tf2::kdlToTransform(current_pose);
-
-        trans.setOrigin(tf::Vector3(tr_stamped.transform.translation.x,
-                                    tr_stamped.transform.translation.y,
-                                    tr_stamped.transform.translation.z));
-
-        q.setW(tr_stamped.transform.rotation.w);
-        q.setX(tr_stamped.transform.rotation.x);
-        q.setY(tr_stamped.transform.rotation.y);
-        q.setZ(tr_stamped.transform.rotation.z);
-
-        trans.setRotation(q);
-
-        br.sendTransform(tf::StampedTransform(trans, ros::Time::now(), "base_link", "arm_end_effector"));
-        r.sleep();
-
-        ros::spinOnce();
-    }
-
-    return 0;
 }
