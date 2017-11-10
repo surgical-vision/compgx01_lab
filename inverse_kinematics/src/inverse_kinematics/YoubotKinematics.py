@@ -9,11 +9,11 @@ from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 
 class YoubotKinematics(object):
     def __init__(self):
-        self.dh_params = [[0.033, pi / 2, 0.147, (170 * pi/ 180)],
-                          [0.155, 0, 0, (65 * pi/ 180) + pi / 2],
-                          [0.135, 0, 0, (-146 * pi/ 180)],
-                          [0.0, pi / 2, 0, (102.5 * pi/ 180) + pi / 2],
-                          [0, 0, 0.183, (167.5 * pi/ 180) + pi]]
+        self.dh_params = [[0.033, pi / 2, 0.147, (170 * pi/ 180), -1],
+                          [0.155, 0, 0, (65 * pi/ 180) + pi / 2, -1],
+                          [0.135, 0, 0, (-146 * pi/ 180), -1],
+                          [0.0, pi / 2, 0, (102.5 * pi/ 180) + pi / 2, -1],
+                          [0, 0, 0.183, (167.5 * pi/ 180) + pi, -1]]
 
         # Setup the subscribers for the joint states
         self.subscriber_joint_state_ = rospy.Subscriber('/joint_states', JointState, self.joint_state_callback,

@@ -29,7 +29,7 @@ class YoubotKDL(YoubotKinematics):
 
     def setup_kdl_chain(self):
         for dh in self.dh_params:
-            self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Vector(), PyKDL.Vector(0, 0, -1),
+            self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Vector(), PyKDL.Vector(0, 0, dh[4]),
                                                                  PyKDL.Joint.RotAxis),
                                                      PyKDL.Frame().DH(dh[0], dh[1], dh[2], dh[3])))
 
