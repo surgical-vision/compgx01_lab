@@ -3,7 +3,7 @@
 import rospy
 from math import pi
 from sensor_msgs.msg import JointState
-from geometry_msgs.msg import TransformStamped
+from geometry_msgs.msg import TransformStamped, Vector3, Quaternion
 import PyKDL
 import tf2_ros
 
@@ -28,11 +28,9 @@ class YoubotKDL(YoubotKinematics):
         self.jac_calc = PyKDL.ChainJntToJacSolver(self.kine_chain)
 
     def setup_kdl_chain(self):
-        self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(0.033, pi / 2, 0.147, 0)))
-        self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(0.155, 0, 0, pi / 2)))
-        self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(0.135, 0, 0, 0)))
-        self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(0.0, pi / 2, 0, pi / 2)))
-        self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ), PyKDL.Frame().DH(0, 0, 0.218, pi)))
+        for dh in self.dh_params:
+            self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ),
+                                                     PyKDL.Frame().DH(dh[0], dh[1], dh[2], dh[3])))
 
     def joint_state_callback(self, msg):
         # Copies joint position into KDL JntArray
@@ -45,7 +43,9 @@ class YoubotKDL(YoubotKinematics):
     def broadcast_pose(self, pose):
         trans = TransformStamped()
 
-        tf2_kdl.do_transform_frame(pose, trans)
+        t = posemath.toMsg(pose)
+        trans.transform.translation = t.position
+        trans.transform.rotation = t.orientation
         trans.header.frame_id = "arm_link_0"
         trans.header.stamp = rospy.Time.now()
         trans.child_frame_id = "arm_end_effector"
@@ -65,21 +65,3 @@ class YoubotKDL(YoubotKinematics):
 
         return required_joint
 
-    def run(self):
-        rate = rospy.Rate(200)
-        while not rospy.is_shutdown():
-            # Find your current cartesian pose
-            self.forward_kinematics(self.current_joint_position, self.current_pose)
-            self.broadcast_pose(self.current_pose)
-
-            # Ikine
-
-            rate.sleep()
-
-
-
-if __name__ == '__main__':
-    rospy.init_node('youbot')
-    youbot = YoubotKDL()
-
-    youbot.run()
