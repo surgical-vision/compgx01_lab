@@ -16,15 +16,13 @@ int main(int argc, char **argv)
     rosbag::Bag bag;
 
     YoubotKDL youbot;
-
     char dummy;
 
     trajectory_msgs::JointTrajectoryPoint joint_array;
-
     youbot.init();
 
     ////Change the name of the file to the corresponding question.
-    bag.open(strcat(MY_PACKAGE_PATH, "test.bag"), rosbag::bagmode::Read);
+    bag.open(MY_BAG_PATH, rosbag::bagmode::Read);
 
     std::vector<std::string> topics;
 
@@ -45,12 +43,12 @@ int main(int argc, char **argv)
             broadcaster.sendTransform(trans);
 
             youbot.forward_kinematics(youbot.current_joint_position, youbot.current_pose);
+
             youbot.broadcast_pose(youbot.current_pose);
 
             KDL::Frame frame = tf2::transformToKDL(trans);
 
             KDL::JntArray jointkdl = youbot.inverse_kinematics_closed(frame);
-
             std::cout << "Publishing joint: {";
 
             joint_array.positions.clear();

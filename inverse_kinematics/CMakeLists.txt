@@ -29,7 +29,7 @@ set(HEADER_FILES
         include/inverse_kinematics/YoubotKDL.h
         include/inverse_kinematics/YoubotKinematics.h)
 
-add_definitions(-DMY_PACKAGE_PATH="${PROJECT_SOURCE_DIR}/bags/")
+add_definitions(-DMY_BAG_PATH="${PROJECT_SOURCE_DIR}/bags/test.bag")
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
