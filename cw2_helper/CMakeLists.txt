@@ -30,7 +30,7 @@ set(HEADER_FILES
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
-
+add_definitions(-DMY_BAG_PATH="${PROJECT_SOURCE_DIR}/bags/data_q4a.bag")
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed

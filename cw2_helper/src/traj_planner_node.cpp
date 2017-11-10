@@ -21,7 +21,7 @@ MatrixXd get_checkpoint()
     rosbag::Bag bag;
 
     ////Change the name of the file to the corresponding question.
-    bag.open("/home/kpach/catkin_ws/src/youbot_stack/youbot_simulator/bags/data_q4a.bag", rosbag::bagmode::Read);
+    bag.open(MY_BAG_PATH, rosbag::bagmode::Read);
 
     std::vector<std::string> topics;
     std::vector<double> entries;
@@ -124,16 +124,9 @@ MatrixXd get_checkpoint()
 
 }
 
-void traj_q4a (MatrixXd checkpoint, int i)
+void traj_q4a (MatrixXd checkpoint)
 {
 
-    traj_pt.positions.resize(5);
-
-    traj_pt.positions[0] = checkpoint(0, i) + 169.0*M_PI/180.0;
-    traj_pt.positions[1] = checkpoint(1, i) + 65.0*M_PI/180.0;
-    traj_pt.positions[2] = 146.0*M_PI/180.0 - checkpoint(2, i);
-    traj_pt.positions[3] = checkpoint(3, i) + 102.5*M_PI/180.0;
-    traj_pt.positions[4] = checkpoint(4, i) + 167.5*M_PI/180.0;
 }
 
 void traj_q4b (MatrixXd checkpoint)
