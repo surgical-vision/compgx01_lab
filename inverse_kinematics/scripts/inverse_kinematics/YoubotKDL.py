@@ -39,32 +39,44 @@ class YoubotKDL(YoubotKinematics):
         for i in range(0, 5):
             self.current_joint_position[i] = msg.position[i]
 
-        # Calculates the current pose everytime the joint position updates
-        self.fk_solver.JntToCart(self.current_joint_position, self.current_pose)
+    def forward_kinematics(self, joint, pose):
+        self.fk_solver.JntToCart(joint, pose)
 
-    def broadcast_pose(self):
+    def broadcast_pose(self, pose):
         trans = TransformStamped()
 
-        tf2_kdl.do_transform_frame(self.current_pose, trans)
+        tf2_kdl.do_transform_frame(pose, trans)
         trans.header.frame_id = "arm_link_0"
         trans.header.stamp = rospy.Time.now()
         trans.child_frame_id = "arm_end_effector"
 
         self.pose_broadcaster.sendTransform(trans)
 
-    def get_jacobian(self):
+    def get_jacobian(self, joint):
         jac = PyKDL.Jacobian(self.kine_chain.getNrOfJoints())
-        self.jac_calc.JntToJac(self.current_joint_position, jac)
+        self.jac_calc.JntToJac(joint, jac)
         return jac
+
+    def inverse_kinematics_closed(self, desired_pose):
+
+        required_joint = PyKDL.JntArray(self.kine_chain.getNrOfJoints())
+        # Current joint array, desired frame, required joint
+        self.ik_solver.CartToJnt(self.current_joint_position, desired_pose, required_joint)
+
+        return required_joint
 
     def run(self):
         rate = rospy.Rate(200)
         while not rospy.is_shutdown():
-            self.broadcast_pose()
+            # Find your current cartesian pose
+            self.forward_kinematics(self.current_joint_position, self.current_pose)
+            self.broadcast_pose(self.current_pose)
 
-            # Call your functions here
+            # Ikine
 
             rate.sleep()
+
+
 
 if __name__ == '__main__':
     rospy.init_node('youbot')

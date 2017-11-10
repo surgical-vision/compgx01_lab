@@ -4,6 +4,7 @@ import rospy
 from sensor_msgs.msg import JointState
 from math import pi
 import tf2_ros
+from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 
 
 class YoubotKinematics(object):
@@ -20,10 +21,18 @@ class YoubotKinematics(object):
         # TF2 broadcaster
         self.pose_broadcaster = tf2_ros.TransformBroadcaster()
 
+        # Trajectory Publisher
+        self.traj_publisher = rospy.Publisher('/EffortJointInterface_trajectory_controller/command', JointTrajectory,
+                                         queue_size=3)
+        self.joint_names = rospy.get_param('/EffortJointInterface_trajectory_controller/joints')
+
     def joint_state_callback(self, msg):
         raise NotImplementedError()
 
-    def forward_kinematics(self, joint):
+    def forward_kinematics(self, joint, pose):
+        raise NotImplementedError()
+
+    def broadcast_pose(self, pose):
         raise NotImplementedError()
 
     def get_jacobian(self, joint):
@@ -35,3 +44,20 @@ class YoubotKinematics(object):
     def inverse_kinematics_closed(self, desired_pose):
         raise NotImplementedError()
 
+    def publish_joint_trajectory(self, joint_trajectory, time_from_start=537230041):
+        # Most simplistic implementation possible
+        # Takes a single array of joint values for each joint
+
+        # Recommend reimplementing this
+        msg = JointTrajectory()
+        msg.header.stamp = rospy.Time.now()
+
+        msg.joint_names = self.joint_names
+
+        point = JointTrajectoryPoint()
+        point.positions = joint_trajectory
+        point.time_from_start.nsecs = time_from_start
+
+        msg.points.append(point)
+
+        self.traj_publisher.publish(msg)
