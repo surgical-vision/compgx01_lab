@@ -19,13 +19,12 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 find_package(Eigen3 REQUIRED)
-find_package(orocos_kdl REQUIRED)
+##find_package(orocos_kdl REQUIRED)
 find_package(Boost REQUIRED)
 
 set(HEADER_FILES
-        include/cw2_helper/YoubotKDL.h
-        include/cw2_helper/YoubotKine.h
-        include/cw2_helper/YoubotManual.h
+        include/cw2_helper/YoubotKinematics.h
+        include/cw2_helper/YoubotIkine.h
 )
 
 ## System dependencies are found with CMake's conventions
@@ -140,8 +139,7 @@ include_directories(
 
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
-  src/YoubotKDL.cpp
-  src/YoubotManual.cpp
+        src/YoubotIkine.cpp
   ${HEADER_FILES}
 )
 
@@ -154,9 +152,8 @@ add_library(${PROJECT_NAME}
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(${PROJECT_NAME}_node
-        src/main.cpp
-        src/YoubotKDL.cpp
-        src/YoubotManual.cpp
+        src/traj_planner_node.cpp
+        src/YoubotIkine.cpp
         ${HEADER_FILES}
 )
 
@@ -173,7 +170,7 @@ add_executable(${PROJECT_NAME}_node
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
-  ${orocos_kdl_LIBRARIES}
+#  ${orocos_kdl_LIBRARIES}
 )
 
 #############

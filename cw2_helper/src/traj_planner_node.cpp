@@ -1,6 +1,5 @@
 #include <ros/ros.h>
-#include <cw2_helper/YoubotKDL.h>
-#include <cw2_helper/YoubotManual.h>
+#include <cw2_helper/YoubotIkine.h>
 #include <rosbag/bag.h>
 #include <rosbag/view.h>
 #include <trajectory_msgs/JointTrajectory.h>
@@ -132,7 +131,6 @@ void traj_q4a (MatrixXd checkpoint, int i)
     my_traj.points.resize(1);
 
     my_traj.points[0].positions.resize(5);
-    my_traj.points[0].velocities.resize(5);
 
     my_traj.points[0].positions[0] = checkpoint(0, i) + 169*M_PI/180.0;
     my_traj.points[0].positions[1] = checkpoint(1, i) + 65.0*M_PI/180.0;
@@ -140,15 +138,7 @@ void traj_q4a (MatrixXd checkpoint, int i)
     my_traj.points[0].positions[3] = checkpoint(3, i) + 102.5*M_PI/180.0;
     my_traj.points[0].positions[4] = checkpoint(4, i) + 167.5*M_PI/180.0;
 
-    if ((i == 0) || (i == checkpoint.cols() - 1))
-        for (int j = 0; j < 5; j++)
-            my_traj.points[0].velocities[j] = 0;
-    else
-        for (int j = 0; j < 5; j++)
-            my_traj.points[0].velocities[j] = checkpoint(j + 5, i);
-
     my_traj.points[0].time_from_start = ros::Duration(10.0);
-
 }
 
 void traj_q4b (MatrixXd checkpoint)
@@ -174,8 +164,8 @@ void traj_qextra (MatrixXd checkpoint)
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "Youbot");
-    YoubotKDL youbot_kdl;
-    YoubotManual youbot_kine;
+
+    YoubotIkine youbot_kine;
 
     //youbot_kdl.init();
     //youbot_kine.init();

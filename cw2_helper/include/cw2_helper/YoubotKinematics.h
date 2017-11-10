@@ -5,14 +5,11 @@
 #include <geometry_msgs/TransformStamped.h>
 #include <tf2_ros/transform_broadcaster.h>
 #include <tf2/LinearMath/Quaternion.h>
-#include <tf2_kdl/tf2_kdl.h>
-#include <kdl/chain.hpp>
-#include <kdl/chainiksolverpos_lma.hpp>
-#include <kdl/chainfksolverpos_recursive.hpp>
-#include <kdl/frames_io.hpp>
-#include <kdl/chainjnttojacsolver.hpp>
+#include <Eigen/Dense>
 
-class YoubotKine
+using namespace Eigen;
+
+class YoubotKinematics
 {
 
 protected:

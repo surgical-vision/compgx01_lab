@@ -1,11 +1,11 @@
 #ifndef CW2_HELPER_YOUBOTMANUAL_H
 #define CW2_HELPER_YOUBOTMANUAL_H
 
-#include <cw2_helper/YoubotKine.h>
+#include <cw2_helper/YoubotKinematics.h>
 
 using namespace Eigen;
 
-class YoubotManual : public YoubotKine
+class YoubotIkine : public YoubotKinematics
 {
 
 private:
