@@ -14,7 +14,9 @@ int main(int argc, char **argv)
     tf2_ros::TransformBroadcaster broadcaster;
     geometry_msgs::TransformStamped trans;
     rosbag::Bag bag;
+
     YoubotKDL youbot;
+
     char dummy;
 
     trajectory_msgs::JointTrajectoryPoint joint_array;
@@ -42,12 +44,12 @@ int main(int argc, char **argv)
 
             broadcaster.sendTransform(trans);
 
-            youbot.forward_kinematics(youbot.fk_solver, youbot.current_joint_position, youbot.current_pose);
+            youbot.forward_kinematics(youbot.current_joint_position, youbot.current_pose);
             youbot.broadcast_pose(youbot.current_pose);
 
             KDL::Frame frame = tf2::transformToKDL(trans);
 
-            KDL::JntArray jointkdl = youbot.inverse_kinematics_closed(frame, youbot.ik_solver);
+            KDL::JntArray jointkdl = youbot.inverse_kinematics_closed(frame);
 
             std::cout << "Publishing joint: {";
 
