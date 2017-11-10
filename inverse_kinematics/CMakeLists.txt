@@ -24,6 +24,10 @@ find_package(Eigen3 REQUIRED)
 find_package(orocos_kdl REQUIRED)
 
 
+set(HEADER_FILES
+        include/inverse_kinematics/YoubotKDL.h
+        include/inverse_kinematics/YoubotKinematics.h)
+
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
@@ -123,16 +127,18 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIRS}
   $ENV{EIGEN3_INCLUDE_DIR}
 )
 
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/inverse_kinematics.cpp
-# )
+add_library(${PROJECT_NAME}
+  scripts/YoubotKinematics.cpp
+  scripts/YoubotKDL.cpp
+  ${HEADER_FILES}
+)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -142,7 +148,11 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(Youbot_Controller scripts/main.cpp)
+add_executable(trajectory_follower
+        scripts/trajectory_follower.cpp
+        scripts/YoubotKinematics.cpp
+        scripts/YoubotKDL.cpp
+        ${HEADER_FILES})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -155,7 +165,7 @@ add_executable(Youbot_Controller scripts/main.cpp)
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(Youbot_Controller
+target_link_libraries(trajectory_follower
   ${catkin_LIBRARIES}
   ${orocos_kdl_LIBRARIES}
 )
