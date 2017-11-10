@@ -1,12 +1,13 @@
-import rospy
-import rosbag
-from inverse_kinematics.YoubotKDL import YoubotKDL
-import PyKDL
-from geometry_msgs.msg import TransformStamped, Vector3, Quaternion
-import tf2_kdl
-import tf2_ros
+#!/usr/bin/env python
+
 import rospkg
 
+import rosbag
+import rospy
+import tf2_kdl
+import tf2_ros
+
+from inverse_kinematics.YoubotKDL import YoubotKDL
 
 if __name__ == '__main__':
     rospy.init_node('youbot_bag_follower')
@@ -15,7 +16,7 @@ if __name__ == '__main__':
 
     rospack = rospkg.RosPack()
 
-    # get the file path for rospy_tutorials
+    # get the file path fortrajectory_follower.py rospy_tutorials
     path = rospack.get_path('inverse_kinematics')
     bag = rosbag.Bag(path + '/bags/test.bag')
     trans_list = []
@@ -40,6 +41,7 @@ if __name__ == '__main__':
 
         # Get next desired pose from rosbag
         frame = tf2_kdl.transform_to_kdl(trans)
+        print(frame)
 
         # Ikine
         jointkdl = youbot.inverse_kinematics_closed(frame)
@@ -48,7 +50,9 @@ if __name__ == '__main__':
         for pos in jointkdl:
             joint_array.append(pos)
 
+        print("publishing joint: {}".format(joint_array))
+        rospy.sleep(0.2)
         youbot.publish_joint_trajectory(joint_array)
 
         rospy.sleep(1)
-        #raw_input('Press enter for next pose\n')
+        raw_input('Press enter for next pose\n')
