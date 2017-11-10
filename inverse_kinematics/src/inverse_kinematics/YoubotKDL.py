@@ -29,7 +29,8 @@ class YoubotKDL(YoubotKinematics):
 
     def setup_kdl_chain(self):
         for dh in self.dh_params:
-            self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Joint.RotZ),
+            self.kine_chain.addSegment(PyKDL.Segment(PyKDL.Joint(PyKDL.Vector(), PyKDL.Vector(0, 0, -1),
+                                                                 PyKDL.Joint.RotAxis),
                                                      PyKDL.Frame().DH(dh[0], dh[1], dh[2], dh[3])))
 
     def joint_state_callback(self, msg):
@@ -46,7 +47,7 @@ class YoubotKDL(YoubotKinematics):
         t = posemath.toMsg(pose)
         trans.transform.translation = t.position
         trans.transform.rotation = t.orientation
-        trans.header.frame_id = "arm_link_0"
+        trans.header.frame_id = "base_link"
         trans.header.stamp = rospy.Time.now()
         trans.child_frame_id = "arm_end_effector"
 

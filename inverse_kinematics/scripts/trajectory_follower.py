@@ -16,7 +16,7 @@ if __name__ == '__main__':
 
     rospack = rospkg.RosPack()
 
-    # get the file path fortrajectory_follower.py rospy_tutorials
+    # get the file path for inverse_kinematics
     path = rospack.get_path('inverse_kinematics')
     bag = rosbag.Bag(path + '/bags/test.bag')
     trans_list = []
