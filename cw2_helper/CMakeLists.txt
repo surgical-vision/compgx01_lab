@@ -140,6 +140,7 @@ include_directories(
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
         src/YoubotIkine.cpp
+        src/YoubotKinematics.cpp
   ${HEADER_FILES}
 )
 
@@ -154,6 +155,7 @@ add_library(${PROJECT_NAME}
 add_executable(${PROJECT_NAME}_node
         src/traj_planner_node.cpp
         src/YoubotIkine.cpp
+        src/YoubotKinematics.cpp
         ${HEADER_FILES}
 )
 

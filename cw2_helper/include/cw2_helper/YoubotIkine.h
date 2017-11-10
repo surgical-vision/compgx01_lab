@@ -21,6 +21,7 @@ public:
     VectorXd inverse_kinematics_closed(Eigen::Matrix4d desired_pose);
     VectorXd inverse_kinematics_jac(Eigen::Matrix4d desired_pose, Eigen::VectorXd current_joint_position);
     Matrix4d forward_kinematics(Eigen::VectorXd current_joint_position);
+    bool check_singularity(VectorXd joint_position);
 
 };
 

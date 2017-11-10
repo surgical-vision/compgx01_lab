@@ -8,7 +8,6 @@
 #define foreach BOOST_FOREACH
 
 trajectory_msgs::JointTrajectoryPoint traj_pt;
-trajectory_msgs::JointTrajectory my_traj;
 
 ////Uncomment this line if you are working on question 4a
 #define n_data_Q4a 10
@@ -128,17 +127,13 @@ MatrixXd get_checkpoint()
 void traj_q4a (MatrixXd checkpoint, int i)
 {
 
-    my_traj.points.resize(1);
+    traj_pt.positions.resize(5);
 
-    my_traj.points[0].positions.resize(5);
-
-    my_traj.points[0].positions[0] = checkpoint(0, i) + 169*M_PI/180.0;
-    my_traj.points[0].positions[1] = checkpoint(1, i) + 65.0*M_PI/180.0;
-    my_traj.points[0].positions[2] = 146.0*M_PI/180.0 - checkpoint(2, i);
-    my_traj.points[0].positions[3] = checkpoint(3, i) + 102.5*M_PI/180.0;
-    my_traj.points[0].positions[4] = checkpoint(4, i) + 167.5*M_PI/180.0;
-
-    my_traj.points[0].time_from_start = ros::Duration(10.0);
+    traj_pt.positions[0] = checkpoint(0, i) + 169.0*M_PI/180.0;
+    traj_pt.positions[1] = checkpoint(1, i) + 65.0*M_PI/180.0;
+    traj_pt.positions[2] = 146.0*M_PI/180.0 - checkpoint(2, i);
+    traj_pt.positions[3] = checkpoint(3, i) + 102.5*M_PI/180.0;
+    traj_pt.positions[4] = checkpoint(4, i) + 167.5*M_PI/180.0;
 }
 
 void traj_q4b (MatrixXd checkpoint)
@@ -167,32 +162,22 @@ int main(int argc, char **argv)
 
     YoubotIkine youbot_kine;
 
-    //youbot_kdl.init();
-    //youbot_kine.init();
-
-    ros::NodeHandle traj_nh;
-    ros::Publisher traj_pub = traj_nh.advertise<trajectory_msgs::JointTrajectory>("/EffortJointInterface_trajectory_controller/command", 1);
+    youbot_kine.init();
 
     MatrixXd check_point_matrix = get_checkpoint();
-
-    my_traj.joint_names.resize(5);
-
-    my_traj.joint_names[0] = "arm_joint_1";
-    my_traj.joint_names[1] = "arm_joint_2";
-    my_traj.joint_names[2] = "arm_joint_3";
-    my_traj.joint_names[3] = "arm_joint_4";
-    my_traj.joint_names[4] = "arm_joint_5";
 
     int i = 0;
     while (ros::ok())
     {
         traj_q4a(check_point_matrix, i);
-        traj_pub.publish(my_traj);
+
+        youbot_kine.publish_joint_trajectory(traj_pt);
+
         ros::spinOnce();
         i++;
 
         if (i >= check_point_matrix.cols())
-            break;
+            i = 0;
 
         sleep(3);
     }

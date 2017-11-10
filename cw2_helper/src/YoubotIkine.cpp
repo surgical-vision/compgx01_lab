@@ -2,10 +2,12 @@
 
 int YoubotIkine::init()
 {
-    ros::Subscriber joint_sub_kine = n.subscribe<sensor_msgs::JointState>("/joint_states", 1,
-                                                                          &YoubotIkine::joint_state_callback,
-                                                                          this);
-    std::cout << "TEST_MANUAL" << std::endl;
+    YoubotKinematics::init();
+    subscriber_joint_state = n.subscribe<sensor_msgs::JointState>("/joint_states", 5, &YoubotIkine::joint_state_callback,
+                                                                  this);
+    current_joint_position.resize(5);
+    desired_joint_position.resize(5);
+    jacobian.resize(6, 5);
 }
 
 void YoubotIkine::joint_state_callback(const sensor_msgs::JointState::ConstPtr &q) {
@@ -31,4 +33,9 @@ VectorXd YoubotIkine::inverse_kinematics_jac(Matrix4d desired_pose, VectorXd cur
 Matrix4d YoubotIkine::forward_kinematics(VectorXd current_joint_position)
 {
     //Add forward kinematics code. (without using KDL libraries)
+}
+
+bool YoubotIkine::check_singularity(VectorXd joint_position)
+{
+    //Add singularity checker. (without using KDL libraries)
 }
