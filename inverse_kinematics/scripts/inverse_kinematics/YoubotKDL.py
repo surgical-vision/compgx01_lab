@@ -7,18 +7,15 @@ from geometry_msgs.msg import TransformStamped
 import PyKDL
 import tf2_ros
 
+from YoubotKinematics import YoubotKinematics
 from tf_conversions import posemath
 
 import tf2_kdl
 
 
-class YoubotKDL:
+class YoubotKDL(YoubotKinematics):
     def __init__(self):
-        # Setup the subscribers for the joint states
-        self.subscriber_joint_state_ = rospy.Subscriber('/joint_states', JointState, self.joint_state_callback, queue_size=5)
-
-        # TF2 broadcaster
-        self.pose_broadcaster = tf2_ros.TransformBroadcaster()
+        super(YoubotKDL, self).__init__()
 
         # PyKDL
         self.kine_chain = PyKDL.Chain()
@@ -63,12 +60,14 @@ class YoubotKDL:
     def run(self):
         rate = rospy.Rate(200)
         while not rospy.is_shutdown():
+            self.broadcast_pose()
+
             # Call your functions here
 
             rate.sleep()
 
 if __name__ == '__main__':
     rospy.init_node('youbot')
-    youbot = Youbot()
+    youbot = YoubotKDL()
 
     youbot.run()

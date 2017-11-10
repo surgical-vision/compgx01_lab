@@ -5,7 +5,8 @@ from sensor_msgs.msg import JointState
 from math import pi
 import tf2_ros
 
-class YoubotKine:
+
+class YoubotKinematics(object):
     def __init__(self):
         self.dh_params = [[0.033, pi / 2, 0.147, 0],
                           [0.155, 0, 0, pi / 2],
@@ -20,21 +21,17 @@ class YoubotKine:
         self.pose_broadcaster = tf2_ros.TransformBroadcaster()
 
     def joint_state_callback(self, msg):
-        return 0
+        raise NotImplementedError()
 
     def forward_kinematics(self, joint):
-
-        return 0
+        raise NotImplementedError()
 
     def get_jacobian(self, joint):
-
-        return 0
+        raise NotImplementedError()
 
     def inverse_kinematics_jac(self, desired_pose, current_joint):
-
-        return 0
+        raise NotImplementedError()
 
     def inverse_kinematics_closed(self, desired_pose):
-
-        return 0
+        raise NotImplementedError()
 
