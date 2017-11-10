@@ -24,12 +24,6 @@ if __name__ == '__main__':
     for topic, msg, t in bag.read_messages(topics=['desired_pose']):
         trans_list.append(msg)
 
-    # trans = TransformStamped()
-    # trans.child_frame_id = 'desired_pos'
-    # trans.header.frame_id = 'arm_link_0'
-    # trans.transform.translation = Vector3(-0.034, -0.197, 0.041)
-    # trans.transform.rotation = Quaternion(0.724, 0.676, -0.120, 0.071)
-
     for trans in trans_list:
         # Publish the desired tf
         trans.header.stamp = rospy.Time.now()
@@ -41,7 +35,6 @@ if __name__ == '__main__':
 
         # Get next desired pose from rosbag
         frame = tf2_kdl.transform_to_kdl(trans)
-        print(frame)
 
         # Ikine
         jointkdl = youbot.inverse_kinematics_closed(frame)
