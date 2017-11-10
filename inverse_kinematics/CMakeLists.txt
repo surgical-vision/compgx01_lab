@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(inverse_kinematics)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -31,7 +31,7 @@ set(HEADER_FILES
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-# catkin_python_setup()
+catkin_python_setup()
 
 ################################################
 ## Declare ROS messages, services and actions ##
@@ -114,9 +114,9 @@ set(HEADER_FILES
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES inverse_kinematics
-#   CATKIN_DEPENDS geometry_msgs roscpp rospy sensor_msgs tf2_ros trajectory_msgs youbot_description
+  INCLUDE_DIRS include
+ # LIBRARIES inverse_kinematics
+   CATKIN_DEPENDS geometry_msgs roscpp rospy sensor_msgs tf2_ros trajectory_msgs youbot_description
    DEPENDS EIGEN3
 )
 
@@ -148,11 +148,15 @@ add_library(${PROJECT_NAME}
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
+<<<<<<< HEAD
 add_executable(trajectory_follower
         scripts/trajectory_follower.cpp
         scripts/YoubotKinematics.cpp
         scripts/YoubotKDL.cpp
         ${HEADER_FILES})
+=======
+add_executable(Youbot_Controller src/main.cpp)
+>>>>>>> cw2_gd
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
