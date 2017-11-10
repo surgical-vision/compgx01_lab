@@ -4,8 +4,12 @@ void YoubotKinematics::init()
 {
     DH_params[0][0] = 0.033;    DH_params[1][0] = 0.155;  DH_params[2][0] = 0.135;  DH_params[3][0] = 0.0;    DH_params[4][0] = 0.0;
     DH_params[0][1] = M_PI_2;   DH_params[1][1] = 0.0;    DH_params[2][1] = 0.0;    DH_params[3][1] = M_PI_2; DH_params[4][1] = 0.0;
-    DH_params[0][2] = 0.147;    DH_params[1][2] = 0.0;    DH_params[2][2] = 0.0;    DH_params[3][2] = 0.0;    DH_params[4][2] = 0.218;
-    DH_params[0][3] = 0.0;      DH_params[1][3] = M_PI_2; DH_params[2][3] = 0.0;    DH_params[3][3] = M_PI_2; DH_params[4][3] = M_PI;
+    DH_params[0][2] = 0.147;    DH_params[1][2] = 0.0;    DH_params[2][2] = 0.0;    DH_params[3][2] = 0.0;    DH_params[4][2] = 0.183;
+    DH_params[0][3] = 170*M_PI/180;
+    DH_params[1][3] = 65*M_PI/180+M_PI_2;
+    DH_params[2][3] = -146*M_PI/180;
+    DH_params[3][3] = M_PI_2+102.5*M_PI/180;
+    DH_params[4][3] = M_PI+167.5*M_PI/180;
 
     traj_publisher = n.advertise<trajectory_msgs::JointTrajectory>("/EffortJointInterface_trajectory_controller/command", 3);
 

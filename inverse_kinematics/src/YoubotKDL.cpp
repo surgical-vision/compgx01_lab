@@ -22,7 +22,7 @@ KDL::Jacobian YoubotKDL::get_jacobian()
 int YoubotKDL::forward_kinematics(KDL::JntArray current_joint_position, KDL::Frame current_pose)
 {
     KDL::ChainFkSolverPos_recursive fk_solver = KDL::ChainFkSolverPos_recursive(kine_chain);
-    return fk_solver.JntToCart(current_joint_position, current_pose, 6);
+    return fk_solver.JntToCart(current_joint_position, current_pose, 5);
 }
 
 void YoubotKDL::joint_state_callback(const sensor_msgs::JointState::ConstPtr &q)
@@ -32,14 +32,11 @@ void YoubotKDL::joint_state_callback(const sensor_msgs::JointState::ConstPtr &q)
         current_joint_position.data(i + 1) = q->position.at(i);
 }
 
-void YoubotKDL::setup_kdl_chain()
-{
-    kine_chain.addSegment(KDL::Segment(KDL::Joint(KDL::Joint::None), KDL::Frame::DH(-0.024,   M_PI,  0.096, 160*M_PI/180)));
-    kine_chain.addSegment(KDL::Segment(KDL::Joint(KDL::Joint::RotZ), KDL::Frame::DH( 0.033, M_PI_2, -0.019, M_PI + (169 * M_PI / 180.0))));
-    kine_chain.addSegment(KDL::Segment(KDL::Joint(KDL::Joint::RotZ), KDL::Frame::DH(-0.155,      0,      0, M_PI_2 + (-65.0 * M_PI / 180.0))));
-    kine_chain.addSegment(KDL::Segment(KDL::Joint(KDL::Joint::RotZ), KDL::Frame::DH(-0.135,      0,      0, (146 * M_PI / 180.0))));
-    kine_chain.addSegment(KDL::Segment(KDL::Joint(KDL::Joint::RotZ), KDL::Frame::DH( 0.002, M_PI_2,      0, M_PI_2 + (-102.5 * M_PI / 180.0))));
-    kine_chain.addSegment(KDL::Segment(KDL::Joint(KDL::Joint::RotZ), KDL::Frame::DH(     0,   M_PI,  -0.21, -150*M_PI/180+(167.5 * M_PI / 180.0))));
+void YoubotKDL::setup_kdl_chain() {
+    for (int i = 0; i < 5; i++)
+        kine_chain.addSegment(KDL::Segment(KDL::Joint(KDL::Joint::None),
+                                           KDL::Frame::DH(DH_params[i][0], DH_params[i][1], DH_params[i][2],
+                                                          DH_params[i][3])));
 }
 
 KDL::JntArray YoubotKDL::inverse_kinematics_closed(KDL::Frame desired_pose)

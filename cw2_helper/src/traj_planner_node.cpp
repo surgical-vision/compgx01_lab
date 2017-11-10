@@ -24,8 +24,7 @@ MatrixXd get_checkpoint()
     bag.open(MY_BAG_PATH, rosbag::bagmode::Read);
 
     std::vector<std::string> topics;
-    std::vector<double> entries;
-
+    MatrixXd p;
 #ifdef n_data_Q4a
     topics.push_back(std::string("joint_data"));
     rosbag::View view(bag, rosbag::TopicQuery(topics));
@@ -36,25 +35,10 @@ MatrixXd get_checkpoint()
 
         if (j != NULL)
         {
-            for (int k = 0; k < 5; k++)
-                entries.push_back(j->position.at(k));
-            for (int k = 0; k < 5; k++)
-                entries.push_back(j->velocity.at(k));
+            //Fill in the code to retrieve data from a bag
         }
     }
 
-    int cc = 0;
-
-    MatrixXd p(n_data_Q4a, entries.size()/n_data_Q4a);
-
-    for (int i = 0; i < n_data_Q4a; i++)
-    {
-        for (int j = 0; j < entries.size()/n_data_Q4a; j++)
-        {
-            p(i, j) = entries.at(cc)*M_PI/180.0;
-            cc++;
-        }
-    }
 
 #elif n_data_Q4b
     topics.push_back(std::string("target_tf"));
@@ -66,26 +50,7 @@ MatrixXd get_checkpoint()
 
         if (j != NULL)
         {
-            entries.push_back(j->translation.x);
-            entries.push_back(j->translation.y);
-            entries.push_back(j->translation.z);
-
-            entries.push_back(j->rotation.x);
-            entries.push_back(j->rotation.y);
-            entries.push_back(j->rotation.z);
-            entries.push_back(j->rotation.w);
-        }
-    }
-
-    int cc = 0;
-    MatrixXd p(n_data_Q4b, entries.size()/n_data_Q4b);
-
-    for (int i = 0; i < n_data_Q4b; i++)
-    {
-        for (int j = 0; j < entries.size()/n_data_Q4b; j++)
-        {
-            p(i, j) = entries.at(cc);
-            cc++;
+            //Fill in the code to retrieve data from a bag
         }
     }
 
@@ -99,23 +64,10 @@ MatrixXd get_checkpoint()
 
         if (j != NULL)
         {
-            entries.push_back(j->x);
-            entries.push_back(j->y);
-            entries.push_back(j->z);
+           //Fill in the code to retrieve data from a bag
         }
     }
 
-    int cc = 0;
-    MatrixXd p(n_data_Q4cd, entries.size()/n_data_Q4cd);
-
-    for (int i = 0; i < n_data_Q4cd; i++)
-    {
-        for (int j = 0; j < entries.size()/n_data_Q4cd; j++)
-        {
-            p(i, j) = entries.at(cc);
-            cc++;
-        }
-    }
 #endif
 
     bag.close();
