@@ -34,7 +34,7 @@ void YoubotKDL::joint_state_callback(const sensor_msgs::JointState::ConstPtr &q)
 
 void YoubotKDL::setup_kdl_chain() {
     for (int i = 0; i < 5; i++)
-        kine_chain.addSegment(KDL::Segment(KDL::Joint(KDL::Joint::None),
+        kine_chain.addSegment(KDL::Segment(KDL::Joint(KDL::Vector(), KDL::Vector(0, 0, -1), KDL::Joint::RotAxis),
                                            KDL::Frame::DH(DH_params[i][0], DH_params[i][1], DH_params[i][2],
                                                           DH_params[i][3])));
 }

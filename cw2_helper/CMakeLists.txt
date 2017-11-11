@@ -24,9 +24,10 @@ find_package(Eigen3 REQUIRED)
 find_package(Boost REQUIRED)
 
 set(HEADER_FILES
-        include/cw2_helper/YoubotKinematics.h
         include/cw2_helper/YoubotIkine.h
 )
+
+add_definitions(-DMY_BAG_PATH="${PROJECT_SOURCE_DIR}/bags/data_q4a.bag")
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -141,7 +142,6 @@ include_directories(
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
         src/YoubotIkine.cpp
-        src/YoubotKinematics.cpp
   ${HEADER_FILES}
 )
 
@@ -156,7 +156,6 @@ add_library(${PROJECT_NAME}
 add_executable(${PROJECT_NAME}_node
         src/traj_planner_node.cpp
         src/YoubotIkine.cpp
-        src/YoubotKinematics.cpp
         ${HEADER_FILES}
 )
 

@@ -1,7 +1,6 @@
 #include <inverse_kinematics/YoubotKDL.h>
 #include <rosbag/bag.h>
 #include <rosbag/view.h>
-#include <geometry_msgs/TransformStamped.h>
 
 #include <boost/foreach.hpp>
 #define foreach BOOST_FOREACH
@@ -40,6 +39,7 @@ int main(int argc, char **argv)
             trans.transform = t->transform;
             trans.child_frame_id = t->child_frame_id;
 
+
             broadcaster.sendTransform(trans);
 
             youbot.forward_kinematics(youbot.current_joint_position, youbot.current_pose);
@@ -49,17 +49,17 @@ int main(int argc, char **argv)
             KDL::Frame frame = tf2::transformToKDL(trans);
 
             KDL::JntArray jointkdl = youbot.inverse_kinematics_closed(frame);
-            std::cout << "Publishing joint: {";
+            std::cout << "Publishing joint: [";
 
             joint_array.positions.clear();
 
             for (int i = 0; i < 5; i++)
             {
                 joint_array.positions.push_back(jointkdl.data(i));
-                std::cout << jointkdl.data(i) << ",  ";
+                std::cout << jointkdl.data(i) << "  ";
             }
 
-            std::cout << "}" << std::endl;
+            std::cout << "]" << std::endl;
 
             ros::Duration(0.2).sleep();
 

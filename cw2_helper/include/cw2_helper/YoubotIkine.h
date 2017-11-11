@@ -1,7 +1,7 @@
 #ifndef CW2_HELPER_YOUBOTMANUAL_H
 #define CW2_HELPER_YOUBOTMANUAL_H
 
-#include <cw2_helper/YoubotKinematics.h>
+#include <inverse_kinematics/YoubotKinematics.h>
 
 using namespace Eigen;
 

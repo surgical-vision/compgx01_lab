@@ -5,6 +5,7 @@ int YoubotIkine::init()
     YoubotKinematics::init();
     subscriber_joint_state = n.subscribe<sensor_msgs::JointState>("/joint_states", 5, &YoubotIkine::joint_state_callback,
                                                                   this);
+
     current_joint_position.resize(5);
     desired_joint_position.resize(5);
     jacobian.resize(6, 5);

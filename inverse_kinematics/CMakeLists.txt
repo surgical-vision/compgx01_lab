@@ -120,7 +120,7 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES inverse_kinematics
    CATKIN_DEPENDS geometry_msgs roscpp rospy sensor_msgs tf2_ros trajectory_msgs youbot_description
-   DEPENDS EIGEN3
+   DEPENDS orocos_kdl EIGEN3
 )
 
 ###########
