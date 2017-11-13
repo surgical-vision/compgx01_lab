@@ -27,9 +27,8 @@ int YoubotKDL::forward_kinematics(KDL::JntArray current_joint_position, KDL::Fra
 
 void YoubotKDL::joint_state_callback(const sensor_msgs::JointState::ConstPtr &q)
 {
-    current_joint_position.data(0) = 0.0;
     for (int i = 0; i < 5; i++)
-        current_joint_position.data(i + 1) = q->position.at(i);
+        current_joint_position.data(i) = q->position.at(i);
 }
 
 void YoubotKDL::setup_kdl_chain() {

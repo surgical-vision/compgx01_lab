@@ -1,9 +1,24 @@
 #include <inverse_kinematics/YoubotKDL.h>
 #include <rosbag/bag.h>
 #include <rosbag/view.h>
+#include <termios.h>
 
 #include <boost/foreach.hpp>
 #define foreach BOOST_FOREACH
+
+int getch()
+{
+    static struct termios oldt, newt;
+    tcgetattr( STDIN_FILENO, &oldt);           // save old settings
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON);                 // disable buffering
+    tcsetattr( STDIN_FILENO, TCSANOW, &newt);  // apply new settings
+
+    int c = getchar();  // read character (non-blocking)
+
+    tcsetattr( STDIN_FILENO, TCSANOW, &oldt);  // restore old settings
+    return c;
+}
 
 int main(int argc, char **argv)
 {
@@ -15,10 +30,9 @@ int main(int argc, char **argv)
     rosbag::Bag bag;
 
     YoubotKDL youbot;
-    char dummy;
+    youbot.init();
 
     trajectory_msgs::JointTrajectoryPoint joint_array;
-    youbot.init();
 
     ////Change the name of the file to the corresponding question.
     bag.open(MY_BAG_PATH, rosbag::bagmode::Read);
@@ -67,7 +81,7 @@ int main(int argc, char **argv)
             ros::Duration(1.0).sleep();
 
             std::cout << "Press any button to continue the trajectory." << std::endl;
-            std::cin >> dummy;
+            int c = getch();
         }
     }
 

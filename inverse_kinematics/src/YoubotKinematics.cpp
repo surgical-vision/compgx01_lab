@@ -11,8 +11,40 @@ void YoubotKinematics::init()
     DH_params[3][3] = M_PI_2+102.5*M_PI/180;
     DH_params[4][3] = M_PI+167.5*M_PI/180;
 
+    subscriber_joint_state = n.subscribe("/joint_states", 1, &YoubotKinematics::joint_state_callback, this);
+
     traj_publisher = n.advertise<trajectory_msgs::JointTrajectory>("/EffortJointInterface_trajectory_controller/command", 3);
 
+}
+
+void YoubotKinematics::joint_state_callback(const sensor_msgs::JointState::ConstPtr &q)
+{
+    //Do something
+}
+
+void YoubotKinematics::forward_kinematics()
+{
+    //Do something
+}
+
+void YoubotKinematics::broadcast_pose()
+{
+    //Do something
+}
+
+void YoubotKinematics::get_jacobian()
+{
+    //Do something
+}
+
+void YoubotKinematics::inverse_kinematics_jac()
+{
+    //Do something
+}
+
+void YoubotKinematics::inverse_kinematics_closed()
+{
+    //Do something
 }
 
 void YoubotKinematics::publish_joint_trajectory(trajectory_msgs::JointTrajectoryPoint joint_trajectory)
