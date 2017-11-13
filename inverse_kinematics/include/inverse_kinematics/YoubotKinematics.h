@@ -25,8 +25,6 @@ protected:
     ros::Publisher traj_publisher;
     ros::Subscriber subscriber_joint_state;
     tf2_ros::TransformBroadcaster pose_broadcaster;
-    geometry_msgs::TransformStamped tr_stamped;
-    tf2::Quaternion q;
     double DH_params[5][5];
 
 public:
