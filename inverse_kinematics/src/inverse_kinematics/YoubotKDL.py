@@ -52,6 +52,7 @@ class YoubotKDL(YoubotKinematics):
         trans.child_frame_id = "arm_end_effector"
 
         self.pose_broadcaster.sendTransform(trans)
+	return trans
 
     def get_jacobian(self, joint):
         jac = PyKDL.Jacobian(self.kine_chain.getNrOfJoints())
