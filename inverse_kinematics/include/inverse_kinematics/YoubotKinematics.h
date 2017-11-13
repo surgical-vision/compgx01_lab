@@ -27,12 +27,12 @@ protected:
     tf2_ros::TransformBroadcaster pose_broadcaster;
     geometry_msgs::TransformStamped tr_stamped;
     tf2::Quaternion q;
-    double DH_params[5][4];
+    double DH_params[5][5];
 
 public:
     void init();
     void publish_joint_trajectory(trajectory_msgs::JointTrajectoryPoint joint_trajectory);
-    void joint_state_callback(const sensor_msgs::JointState::ConstPtr &q);
+    virtual void joint_state_callback(const sensor_msgs::JointState::ConstPtr &q);
     void forward_kinematics();
     void broadcast_pose();
     void get_jacobian();

@@ -48,17 +48,13 @@ int main(int argc, char **argv)
 
         if (t != NULL)
         {
+            trans = *t;
             trans.header.stamp = ros::Time::now();
-            trans.header.frame_id = t->header.frame_id;
-            trans.transform = t->transform;
-            trans.child_frame_id = t->child_frame_id;
-
-
             broadcaster.sendTransform(trans);
 
-            youbot.forward_kinematics(youbot.current_joint_position, youbot.current_pose);
+            KDL::Frame current_pose = youbot.forward_kinematics(youbot.current_joint_position, youbot.current_pose);
 
-            youbot.broadcast_pose(youbot.current_pose);
+            youbot.broadcast_pose(current_pose);
 
             KDL::Frame frame = tf2::transformToKDL(trans);
 
@@ -80,6 +76,7 @@ int main(int argc, char **argv)
             youbot.publish_joint_trajectory(joint_array);
             ros::Duration(1.0).sleep();
 
+            ros::spinOnce();
             std::cout << "Press any button to continue the trajectory." << std::endl;
             int c = getch();
         }

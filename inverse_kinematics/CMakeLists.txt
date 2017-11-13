@@ -160,6 +160,11 @@ add_executable(trajectory_follower
         src/YoubotKDL.cpp
         ${HEADER_FILES})
 
+add_executable(bag_recorder_node
+        src/bag_recorder.cpp
+        src/YoubotKDL.cpp
+        src/YoubotKinematics.cpp
+        ${HEADER_FILES})
 
 
 ## Rename C++ executable without prefix
@@ -176,6 +181,11 @@ add_executable(trajectory_follower
 target_link_libraries(trajectory_follower
   ${catkin_LIBRARIES}
   ${orocos_kdl_LIBRARIES}
+)
+
+target_link_libraries(bag_recorder_node
+        ${catkin_LIBRARIES}
+        ${orocos_kdl_LIBRARIES}
 )
 
 #############
