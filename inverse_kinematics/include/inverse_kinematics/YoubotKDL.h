@@ -16,7 +16,7 @@ public:
     KDL::Jacobian get_jacobian(KDL::JntArray current_joint_position);
     KDL::JntArray inverse_kinematics_closed(KDL::Frame desired_pose);
     KDL::Frame forward_kinematics(KDL::JntArray current_joint_position, KDL::Frame current_pose);
-    void joint_state_callback(const sensor_msgs::JointState::ConstPtr &q) final;
+    void joint_state_callback(const sensor_msgs::JointState::ConstPtr &q);
 
 };
 
