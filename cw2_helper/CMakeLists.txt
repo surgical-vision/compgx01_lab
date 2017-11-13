@@ -24,13 +24,16 @@ find_package(Eigen3 REQUIRED)
 find_package(Boost REQUIRED)
 
 set(HEADER_FILES
-        include/cw2_helper/YoubotKinematics.h
         include/cw2_helper/YoubotIkine.h
 )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
-add_definitions(-DMY_BAG_PATH="${PROJECT_SOURCE_DIR}/bags/data_q4a.bag")
+add_definitions(-DMY_BAG_PATH1="${PROJECT_SOURCE_DIR}/bags/data_q4a.bag")
+add_definitions(-DMY_BAG_PATH2="${PROJECT_SOURCE_DIR}/bags/data_q4b.bag")
+add_definitions(-DMY_BAG_PATH3="${PROJECT_SOURCE_DIR}/bags/data_q4c.bag")
+add_definitions(-DMY_BAG_PATH4="${PROJECT_SOURCE_DIR}/bags/data_q4d.bag")
+add_definitions(-DMY_BAG_PATH5="${PROJECT_SOURCE_DIR}/bags/data_extra.bag")
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -119,7 +122,7 @@ catkin_python_setup()
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES q3
+#  LIBRARIES cw2_helper
 #  CATKIN_DEPENDS compgx01_msgs roscpp rospy
 #  DEPENDS system_lib
 )
@@ -141,7 +144,6 @@ include_directories(
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
         src/YoubotIkine.cpp
-        src/YoubotKinematics.cpp
   ${HEADER_FILES}
 )
 
@@ -153,10 +155,9 @@ add_library(${PROJECT_NAME}
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(${PROJECT_NAME}_node
-        src/traj_planner_node.cpp
+add_executable(traj_planner_node_q4a
+        src/traj_planner_node_q4a.cpp
         src/YoubotIkine.cpp
-        src/YoubotKinematics.cpp
         ${HEADER_FILES}
 )
 
@@ -171,7 +172,7 @@ add_executable(${PROJECT_NAME}_node
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(${PROJECT_NAME}_node
+target_link_libraries(traj_planner_node_q4a
   ${catkin_LIBRARIES}
 #  ${orocos_kdl_LIBRARIES}
 )

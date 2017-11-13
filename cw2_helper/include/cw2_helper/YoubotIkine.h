@@ -1,7 +1,7 @@
 #ifndef CW2_HELPER_YOUBOTMANUAL_H
 #define CW2_HELPER_YOUBOTMANUAL_H
 
-#include <cw2_helper/YoubotKinematics.h>
+#include <inverse_kinematics/YoubotKinematics.h>
 
 using namespace Eigen;
 
@@ -15,7 +15,7 @@ private:
 
 public:
 
-    int init();
+    void init();
     void joint_state_callback(const sensor_msgs::JointState::ConstPtr &q);
     MatrixXd get_jacobian(Eigen::VectorXd current_pose);
     VectorXd inverse_kinematics_closed(Eigen::Matrix4d desired_pose);

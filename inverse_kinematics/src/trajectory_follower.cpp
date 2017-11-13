@@ -79,6 +79,7 @@ int main(int argc, char **argv)
             ros::spinOnce();
             std::cout << "Press any button to continue the trajectory." << std::endl;
             int c = getch();
+
         }
     }
 
