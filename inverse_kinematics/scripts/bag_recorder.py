@@ -21,10 +21,15 @@ if __name__ == '__main__':
     # Load the bag here
 
     while not rospy.is_shutdown():
+	# Move to new position
+	youbot.publish_joint_trajectory([0, 0, 0, 0, 0])
+
         # Find your current cartesian pose
         youbot.forward_kinematics(youbot.current_joint_position, youbot.current_pose)
-        youbot.broadcast_pose(youbot.current_pose)
-
+        trans = youbot.broadcast_pose(youbot.current_pose)
+	
+	# Write to ROSbag
+	rosbag.write('desired_pose', trans) 
 
 
         rospy.sleep(1)
