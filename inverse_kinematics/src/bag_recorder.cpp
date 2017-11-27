@@ -19,6 +19,7 @@ int main (int argc, char **argv)
         KDL::Frame current_pose = youbot.forward_kinematics(youbot.current_joint_position, youbot.current_pose);
         youbot.broadcast_pose(current_pose);
 
+        ros::spinOnce();
         ros::Duration(0.01).sleep();
     }
 
