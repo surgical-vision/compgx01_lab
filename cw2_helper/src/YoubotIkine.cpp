@@ -1,6 +1,6 @@
 #include <cw2_helper/YoubotIkine.h>
 
-int YoubotIkine::init()
+void YoubotIkine::init()
 {
     YoubotKinematics::init();
     subscriber_joint_state = n.subscribe<sensor_msgs::JointState>("/joint_states", 5, &YoubotIkine::joint_state_callback,

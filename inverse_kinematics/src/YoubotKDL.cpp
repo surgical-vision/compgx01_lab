@@ -25,7 +25,6 @@ KDL::Frame YoubotKDL::forward_kinematics(KDL::JntArray current_joint_position, K
 
 void YoubotKDL::joint_state_callback(const sensor_msgs::JointState::ConstPtr &q)
 {
-    printf("TEST\n");
     for (int i = 0; i < 5; i++)
         this->current_joint_position.data(i) = q->position.at(i);
 }
